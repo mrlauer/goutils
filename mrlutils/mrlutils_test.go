@@ -1,6 +1,6 @@
 package mrlutils
 
-import(
+import (
 	"testing"
 	"strings"
 )
