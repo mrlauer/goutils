@@ -25,12 +25,12 @@ func (w *ByteWriter) Data() []byte {
 
 // Create a ByteWriter
 func NewByteWriter() *ByteWriter {
-	return &ByteWriter{make([]byte, 0)}
+	return &ByteWriter{}
 }
 
 // Read the next line from a byte slice. Return the line and the unread portion,
 // omitting the line delimiter. If there is no line delimiter present, or if
-// the array ends with a delimiter. return the
+// the array ends with a delimiter, return the
 // entire slice as the line and an empty unread portion.
 // \n and \r\n are accepted as delimiters
 func ReadLine(s []byte) (line, rest []byte) {
@@ -47,7 +47,6 @@ func ReadLine(s []byte) (line, rest []byte) {
 
 // Split a byte array into lines
 func SplitLines(s []byte) (results [][]byte) {
-	results = make([][]byte, 0)
 	rest := s
 	for len(rest) > 0 {
 		line, r := ReadLine(rest)
