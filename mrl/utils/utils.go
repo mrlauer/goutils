@@ -3,6 +3,7 @@
 package utils
 
 import (
+	"io"
 	"os"
 	"exec"
 	"bytes"
@@ -63,7 +64,13 @@ func SplitLines(s []byte) (results [][]byte) {
 
 // Execute runs a command, returning stdout, stdin, and the result as an error status.
 func Execute(cmd string, args ...string) (stdout []byte, stderr []byte, err os.Error) {
+	return ExecuteWithStdin(nil, cmd, args...)
+}
+
+// ExecuteWithStdin runs a command, returning stdout, stdin, and the result as an error status.
+func ExecuteWithStdin(stdin io.Reader, cmd string, args ...string) (stdout []byte, stderr []byte, err os.Error) {
 	command := exec.Command(cmd, args...)
+	command.Stdin = stdin
 	wout := NewByteWriter()
 	werr := NewByteWriter()
 	command.Stdout = wout

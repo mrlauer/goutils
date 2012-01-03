@@ -31,20 +31,14 @@ func main() {
 				fmt.Fprintf(os.Stderr, "Error in cat %s: %s\n", file, err)
 				continue
 			}
-			fmtcmd := exec.Command("gofmt", "-l")
-			fmtcmd.Stdin = catout
-			outb := utils.NewByteWriter()
-			errb := utils.NewByteWriter()
-			fmtcmd.Stdout = outb
-			fmtcmd.Stderr = errb
 			catcmd.Start()
-			fmterr := fmtcmd.Run()
+			outb, errb, fmterr := utils.ExecuteWithStdin(catout, "gofmt", "-l")
 			catcmd.Wait()
 			if fmterr != nil {
 				ok = false
-				fmt.Fprintf(os.Stderr, "syntax error in %s\n", file)
+				fmt.Fprintf(os.Stderr, "syntax error in %s %s %s\n", file, errb, fmterr)
 			}
-			if len(outb.Data()) != 0 {
+			if len(outb) != 0 {
 				ok = false
 				fmt.Fprintf(os.Stderr, "formatting error: run gofmt -w %s\n", file)
 			}
