@@ -4,7 +4,7 @@
 //
 package main
 
-import(
+import (
 	"fmt"
 	"mrl/utils"
 	"os"
